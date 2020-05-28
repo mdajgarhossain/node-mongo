@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+    <h1>My Node and Mongo DB Site</h1>
+    <h3 id="userName"></h3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <input type="text" class="form-control" id="inputName">
+            <button class="btn btn-primary" id="addUser">ADD USER</button>
+        </div>
+    </div>
+
+    <script>
+        fetch('http://localhost:3000/users/3')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("userName").innerText = data.name;
+        });
+
+        //POST data to the server
+        const btnAddUser = document.getElementById('addUser');
+        btnAddUser.addEventListener('click', () => {
+            const name = document.getElementById('inputName').value;
+            const user = {name};
+            fetch('http://localhost:3000/addUser', {
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            .then(res => res.json())
+            .then(data => updateUser(data))
+        });
+
+        function updateUser(user) {
+            document.getElementById('userName').innerText = user.name;
+        }
+    </script>
+</body>
+</html>
